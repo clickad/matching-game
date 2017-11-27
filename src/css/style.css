@@ -104,6 +104,7 @@ body{
   margin: 7px;
   -webkit-perspective: 600px;
   -moz-perspective: 600px;
+  perspective: 600px;
   cursor: pointer;
 }
 
@@ -120,10 +121,13 @@ body{
   text-align: center;
   -webkit-transform: rotateX(0deg) rotateY(0deg);
   -moz-transform: rotateX(0deg) rotateY(0deg);
+  transform: rotateX(0deg) rotateY(0deg);
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
   -ms-transition: all .3s ease-in-out;
@@ -138,10 +142,13 @@ body{
   z-index: 1000;
   -webkit-transform: rotateY(-180deg);
   -moz-transform: rotateY(-180deg);
+  transform: rotateY(-180deg);
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
   -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
   -ms-transition: all .3s ease-in-out;
@@ -153,12 +160,15 @@ body{
   z-index: 900;
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 .flip .back {
   background: #008000;
   z-index: 1000;
   -webkit-transform: rotateX(0deg) rotateY(0deg);
   -moz-transform: rotateX(0deg) rotateY(0deg);
+  transform: rotateX(0deg) rotateY(0deg);
+  border: 1px solid #008000;
 }
 
 .box .front img{
@@ -169,6 +179,10 @@ body{
 .result{
   opacity: 0;
   position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 1380px){
@@ -191,8 +205,8 @@ body{
   }
 
   .box{
-    width: 8vw;
-    height: 9vw;
+    width: 7vw;
+    height: 8vw;
   }
 
   .options{
@@ -213,7 +227,6 @@ body{
     font-size: 16px;
   }
 }
-
 
 @media (max-width: 490px){
   .wrapper{
