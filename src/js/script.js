@@ -51,7 +51,7 @@ $(document).ready(function(){
     });
 
     function startGame(){ 
-      $('.result').animate({"opacity":"0"},500);
+      $('.result').animate({"opacity":"0","z-index":"-1"},500);
       isDone = 0;
       images = [];
       images = getRandom(allImages, boxes);
@@ -148,10 +148,10 @@ $(document).ready(function(){
                 $('.needToRemove').find('img').animate({"opacity":0},700);
                 $('.needToRemove .back').css("background","transparent");
                 $('.box').addClass('flip');
-                isDone++; console.log(isDone);
+                isDone++;
                 started = 0;
-                if(isDone == boxes){ console.log('done');
-                  $('.result').animate({"opacity":"1"},500);
+                if(isDone == boxes){
+                  $('.result').animate({"opacity":"1","z-index":"10"},500);
                 }
 
               },700);
