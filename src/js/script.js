@@ -6,56 +6,64 @@ $(document).ready(function(){
 
   $.when(getData()).then(function (data) {
     var allImages = data;
-    var boxes;
+    var boxes = 4;
     var images = [];
     var finalImages = [];
-    var resultImages = [];
-    var counter = 3;
-    var count;
-    var sec = counter;
-    var startImages = [];
-    var compareImages = [];
-    var src, src2;
-    var ct = 0;
-    $('.level').prop('selectedIndex',0); 
-    var currentLevel = parseInt($('.level').val());
+    var duplicateImages = [];
+    var wrapperSize;
+    var rows = 4;
+    var started = 0;
+    var count = 0;
+    var picked = [];
+    var isDone = 0;
 
-    $( ".result-boxes" ).sortable({
-      placeholder: "highlight",
-      cursor: "move"
-    });
-    $( ".result-boxes" ).disableSelection();
+    $('.level').prop('selectedIndex',0);
 
     $('.level').on('change', function(){
-      currentLevel = parseInt($(this).val());
-      levelChange(currentLevel);
-    });
-
-    function levelChange(level){
-      switch(level){
-        case  1:
-          boxes = 3;
-          counter = 3;
-          break;
-        case  2:
+      switch($(this).val()){
+        case  "1":
           boxes = 4;
-          counter = 3;
+          rows = 4;
           break;
-        case  3:
+        case  "2":
           boxes = 6;
-          counter = 5;
+          rows = 4;
           break;
-        case  4:
+        case  "3":
           boxes = 8;
-          counter = 10;
+          rows = 4;
           break;
-        case  5:
+        case  "4":
           boxes = 10;
-          counter = 20;
+          rows = 5;
+          break;
+        case  "5":
+          boxes = 12;
+          rows = 6;
           break;
         default:
-          boxes = 3;
+          boxes = 4;
       }
+    })
+
+    $('.start').on('click', function(){
+      startGame();
+    });
+
+    function startGame(){ 
+      $('.result').animate({"opacity":"0","z-index":"-1"},500);
+      isDone = 0;
+      images = [];
+      images = getRandom(allImages, boxes);
+      duplicateImages = [];
+      duplicateImages = images.concat(images);
+      finalImages = [];
+      finalImages = shuffle(duplicateImages);
+      $('.wrapper').html($('.result'));
+      insertBox();
+      wrapperWidth()
+      flipOverAll();
+      flipOver();
     }
 
     // get random images from all images
@@ -69,6 +77,11 @@ $(document).ready(function(){
       }
       return rand.slice(min);
     }
+
+    images  = getRandom(allImages, boxes);
+
+    //duplicate images
+    duplicateImages = images.concat(images);
 
     //sfuffle images
     function shuffle(array) {
@@ -85,117 +98,93 @@ $(document).ready(function(){
       }
       return array;
     }
+    finalImages = shuffle(duplicateImages);
 
     function insertBox(){
       for(var i = 0; i < finalImages.length; i++){
-        $('.start-boxes').append('<div class = "box"><img src = "img/'+ finalImages[i]+'.png" alt = "image"></div>');
+        $('.wrapper').append('<div class = "box"><div class="back"></div><div class="front"><img src = "img/'+ finalImages[i]+'.png" alt = "image"></div></div>');
       } 
     }
+    insertBox();
+    wrapperWidth();
+    $(window).on('resize',function(){
+      wrapperWidth();
+    });
+    function wrapperWidth(){
+      wrapperSize = (parseInt($('.box').width()) * parseInt(rows))+(parseInt(boxes)*7) + 40;
+      $('.wrapper').css("width",wrapperSize + "px");
+    }
 
-    function countDown(){
-      resultImages = [];
-      $('.start-boxes').animate({"opacity":"0"},1000);
-
-      setTimeout(function(){
-        $('.result-boxes').animate({"opacity":"1"},1000);
-      },1500);
-
+    function flipOverAll(){
       $('.box').each(function(){
-        resultImages.push($(this).find('img').attr('src'));
+        $(this).addClass('flip');
       });
-      resultImages = shuffle(resultImages);
-      for(var i = 0; i < resultImages.length; i++){
-        $('.result-boxes').append('<div class = "box"><img src = "'+resultImages[i]+'" alt = "image"></div>');
-      }
     }
 
-    function timer(){
-      $('.start').prop("disabled","true");
-      $('.level').prop("disabled","true");
-      $('.counter').css("opacity","1");
-      $('.counter').html(sec);
-      sec--;
-      if(sec == -1){
-        clearInterval(count);
-        sec = counter;
-        $('.start').prop("disabled","");
-        $('.level').prop("disabled","");
-        setTimeout(function(){
-          $('.counter').html('');
-          $('.counter').css("opacity","0");
-          setTimeout(function(){
-            $('.submit').animate({"opacity":"1"},500);
-          },1500);
+    function flipOver(){     console.log(boxes);
+      $('.box').on('click',function(){ 
 
-        },700);
-        countDown();
-      }
-    }
-
-
-    function checkResult(){
-      ct = 0;
-      compareImages = [];
-      startImages= [];
-      $('.result-boxes .box').each(function(){
-        src = $(this).find('img').attr('src').toString();
-        compareImages.push(src);
-      });
-      $('.start-boxes .box').each(function(){
-        src2 = $(this).find('img').attr('src').toString();
-        startImages.push(src2);
-      });
-
-      for (var i = 0; i < compareImages.length; ++i) {
-        if (compareImages[i] == startImages[i]){ 
-          ct++;
+        if($(this).hasClass("flip")){
+          started ++;
         }
-      } 
-      if(ct == compareImages.length){
-        $('.correct').animate({"opacity":"1"},500);
+
+        if(started == 1 || started == 2){ 
+          $(this).removeClass('flip')
+        }
+
+        if(started == 2){
+          if(!$(this).hasClass("flip")){
+
+            $('.box').each(function(){
+              if(!$(this).hasClass("flip")){
+                count ++;
+                $(this).addClass('needToRemove');
+                picked.push($(this).find('img').attr('src'));
+              }
+            });
+
+            if(count == 2 && picked[0] == picked[1]){
+              setTimeout(function(){
+                $('.needToRemove').find('img').animate({"opacity":0},700);
+                $('.needToRemove .back').css("background","transparent");
+                $('.box').addClass('flip');
+                isDone++;
+                started = 0;
+                if(isDone == boxes){
+                  $('.result').animate({"opacity":"1","z-index":"10"},500);
+                }
+
+              },700);
+            }else{
+              resetFlip()
+            }
+          } else{
+            resetFlip()
+          }
+
+          setTimeout(function(){
+            picked = [];
+            count = 0;
+            $('.box').removeClass('needToRemove');
+          },1000);
+
+        } 
+      });
+
+      function resetFlip(){
         setTimeout(function(){
-          $('.correct').animate({"opacity":"0"},500);
-          currentLevel++;
-          $('.level').val(currentLevel);
-          $('.start').trigger('click');
-        },2000);
-      }else{
-        $('.wrong').animate({"opacity":"1"},500);
-        setTimeout(function(){
-          $('.wrong').animate({"opacity":"0"},500);
-          currentLevel = 1;
-          $('.level').val(currentLevel);
-          $('.start').trigger('click');
-        },2000);  
-      }
+          $('.box').addClass('flip');
+          setTimeout(function(){
+            started = 0; 
+          },200);
+        },700);
+      }         
     }
-
-    function startGame(){ 
-      levelChange(currentLevel);
-      $('.start-text').animate({"opacity":"0"},500);
-      $('.start-boxes').animate({"opacity":"1"},1000);
-      $('.result-boxes').animate({"opacity":"0"},1000);
-      $('.submit').animate({"opacity":"0"},500);
-      $('.start-boxes').html('');
-      $('.result-boxes').html('');
-      $('.result').animate({"opacity":"0"},500);
-      images = [];
-      images = getRandom(allImages, boxes);
-      finalImages = [];
-      finalImages = shuffle(images);
-      insertBox();
-      sec = counter;
-      count = setInterval(function(){timer()},1000);
-    }
-
-    $('.start').on('click', function(){
-      $(this).prop("disabled","true");
-      startGame();
-    });
-
-    $('.submit').on('click',function(){
-      checkResult();
-    });
+    
+    setTimeout(function(){
+      flipOverAll();
+      flipOver();
+    },10);
 
   });
 })
