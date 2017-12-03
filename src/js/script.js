@@ -17,7 +17,19 @@ $(document).ready(function(){
     var picked = [];
     var isDone = 0;
 
-    $('.level').prop('selectedIndex',0);
+    function init(){
+      $('.level').prop('selectedIndex',0);
+      images  = getRandom(allImages, boxes);
+      duplicateImages = images.concat(images);
+      finalImages = shuffle(duplicateImages);
+      insertBox();
+      wrapperWidth();
+      setTimeout(function(){
+        flipOverAll();
+        flipOver();
+      },10);
+    }
+    init();
 
     $('.level').on('change', function(){
       switch($(this).val()){
@@ -78,11 +90,6 @@ $(document).ready(function(){
       return rand.slice(min);
     }
 
-    images  = getRandom(allImages, boxes);
-
-    //duplicate images
-    duplicateImages = images.concat(images);
-
     //sfuffle images
     function shuffle(array) {
       var currentIndex = array.length, temporaryValue, randomIndex;
@@ -98,15 +105,13 @@ $(document).ready(function(){
       }
       return array;
     }
-    finalImages = shuffle(duplicateImages);
 
     function insertBox(){
       for(var i = 0; i < finalImages.length; i++){
         $('.wrapper').append('<div class = "box"><div class="back"></div><div class="front"><img src = "img/'+ finalImages[i]+'.png" alt = "image"></div></div>');
       } 
     }
-    insertBox();
-    wrapperWidth();
+
     $(window).on('resize',function(){
       wrapperWidth();
     });
@@ -121,7 +126,7 @@ $(document).ready(function(){
       });
     }
 
-    function flipOver(){     console.log(boxes);
+    function flipOver(){
       $('.box').on('click',function(){ 
 
         if($(this).hasClass("flip")){
@@ -180,11 +185,6 @@ $(document).ready(function(){
         },700);
       }         
     }
-    
-    setTimeout(function(){
-      flipOverAll();
-      flipOver();
-    },10);
 
   });
 })
