@@ -7,18 +7,12 @@ body{
 .container{
   display: flex;
   display: -webkit-flex;
-  display: -ms-flex;
   flex-direction: column;
   -webkit-flex-direction: column;
-  -ms-flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100%;
-}
-
-.title{
-  text-transform: uppercase;
 }
 
 .level{
@@ -57,25 +51,21 @@ body{
 .header{
   display: flex;
   display: -webkit-flex;
-  display: -ms-flex;
   justify-content: center;
   align-items: center;
   align-content: center;
   flex-direction: column;
   -webkit-flex-direction: column;
-  -ms-flex-direction: column;
 }
 
 .options{
   display: flex;
   display: -webkit-flex;
-  display: -ms-flex;
 }
 
 .content{
   display: flex;
   display: -webkit-flex;
-  display: -ms-flex;
   height: 80vh;
   justify-content: center;
   align-items: center;
@@ -85,9 +75,7 @@ body{
 .wrapper{
   display: flex;
   display: -webkit-flex;
-  display: -ms-flex;
   width: 50%;
-  height: 80vh;
   border:1px solid #565656;
   flex-wrap: wrap;
   justify-content: center;
@@ -121,6 +109,8 @@ body{
   text-align: center;
   -webkit-transform: rotateX(0deg) rotateY(0deg);
   -moz-transform: rotateX(0deg) rotateY(0deg);
+  -ms-transform: rotateX(0deg) rotateY(0deg);
+  -o-transform: rotateX(0deg) rotateY(0deg);
   transform: rotateX(0deg) rotateY(0deg);
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
@@ -142,6 +132,8 @@ body{
   z-index: 1000;
   -webkit-transform: rotateY(-180deg);
   -moz-transform: rotateY(-180deg);
+  -ms-transform: rotateY(-180deg);
+  -o-transform: rotateY(-180deg);
   transform: rotateY(-180deg);
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
@@ -160,6 +152,8 @@ body{
   z-index: 900;
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
   transform: rotateY(180deg);
 }
 .flip .back {
@@ -167,6 +161,8 @@ body{
   z-index: 1000;
   -webkit-transform: rotateX(0deg) rotateY(0deg);
   -moz-transform: rotateX(0deg) rotateY(0deg);
+  -ms-transform: rotateX(0deg) rotateY(0deg);
+   -o-transform: rotateX(0deg) rotateY(0deg);
   transform: rotateX(0deg) rotateY(0deg);
   border: 1px solid #008000;
 }
@@ -195,46 +191,37 @@ body{
   .container, .wrapper, .content{
     height: auto;
   }
-
   .content{
     margin-bottom: 20px;
   }
-
   .wrapper{
     width: 90%;
   }
-
   .box{
     width: 7vw;
     height: 8vw;
   }
-
   .options{
     margin-bottom: 10px;
   }
-
   .header{
     margin: 20px 0;
   }
-
   .level-label{
     font-size: 16px;
     padding-top: 5px;
   }
-
   .start{
     padding: 5px 20px;
     font-size: 16px;
   }
 }
 
-
 @media (max-width: 490px){
   .wrapper{
     width: 90%;
     padding: 10px 0;
   }
-
   .box{
     width: 11vw;
     height: 12vw;
