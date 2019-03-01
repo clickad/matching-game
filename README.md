@@ -1,2 +1,2 @@
 # memo-game
-Simple pure html, css, jquery memo game.
+Simple html, css, jquery memo game.
