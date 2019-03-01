@@ -1,9 +1,9 @@
-(function(){
-  function getData() {
+(()=>{
+  let getData = ()=> {
     return $.getJSON('data.json');
   }
-  $.when(getData()).then(function (data) {
-    var app = {
+  $.when(getData()).then((data)=> {
+    let app = {
       init: function(){
         this.$window = $(window);
         this.$wrapper = $('.wrapper');
@@ -28,15 +28,15 @@
         this.$window.on('resize', this.wrapperWidth.bind(this));
         $('.box').on('click', this.checkChoosen.bind(this));
       },
-      prepareGame: function (){
-        var self = this;
+      prepareGame: function() {
+        let self = this;
         this.$level.prop('selectedIndex',0);
         this.images  = this.getRandom(this.allImages, this.boxes);
         this.duplicateImages = this.images.concat(this.images);
         this.finalImages = this.shuffle(this.duplicateImages);
         this.insertBox();
         this.wrapperWidth();
-        setTimeout(function(){
+        setTimeout(()=> {
           self.flipOverAll();
         },10);
       },
@@ -82,7 +82,7 @@
         $('.box').on('click', this.checkChoosen.bind(this));
       },
       getRandom: function (arr, count) {  // get random images from all images
-        var rand = arr.slice(0), i = arr.length, min = i - count, temp, index;
+        let rand = arr.slice(0), i = arr.length, min = i - count, temp, index;
         while (i-- > min) {
           index = Math.floor((i + 1) * Math.random());
           temp = rand[index];
@@ -92,7 +92,7 @@
         return rand.slice(min);
       },
       shuffle: function (array) {   //sfuffle images
-        var currentIndex = array.length, temporaryValue, randomIndex;
+        let currentIndex = array.length, temporaryValue, randomIndex;
         // While there remain elements to shuffle...
         while (0 !== currentIndex) {
           // Pick a remaining element...
@@ -106,23 +106,29 @@
         return array;
       },
       insertBox: function (){
-        for(var i = 0; i < this.finalImages.length; i++){
+        for(let i = 0; i < this.finalImages.length; i++){
           this.$wrapper.append(
-            '<div class = "box"><div class="back"></div><div class="front">' + 
-            '<img src = "img/'+ this.finalImages[i]+'.png" alt = "image"></div></div>');
+            `<div class = "box">
+              <div class="back">
+              </div>
+              <div class="front"> 
+                <img src = "img/${this.finalImages[i]}.png" alt = "image">
+              </div>
+            </div>`
+            );
         } 
       },
-      wrapperWidth: function (){
+      wrapperWidth: function() {
         this.wrapperSize = (parseInt($('.box').width()) * parseInt(this.rows))+(parseInt(this.boxes)*7) + 40;
         this.$wrapper.css("width", this.wrapperSize + "px");
       },
-      flipOverAll: function (){
-        $('.box').each(function(){
+      flipOverAll: function() {
+        $('.box').each(function() {
           $(this).addClass('flip');
         });
       },
       checkChoosen: function(event){
-        var self = this;
+        let self = this;
         if($(event.target).parent().hasClass("flip")){
           this.started ++;
         }
@@ -139,7 +145,7 @@
               }
             });
             if(this.count == 2 && this.picked[0] == this.picked[1]){ 
-              setTimeout(function(){
+              setTimeout(()=>{
                 self.removeMatched();
               },700);
             }else{
@@ -148,7 +154,7 @@
           } else{
             this.resetFlip();
           }
-          setTimeout(function(){
+          setTimeout(()=>{
             self.picked = [];
             self.count = 0;
             $('.box').removeClass('needToRemove');
@@ -166,17 +172,17 @@
         }
       },
       resetFlip: function (){
-        var self = this;
-        setTimeout(function(){
+        let self = this;
+        setTimeout(()=> {
           $('.box').addClass('flip');
-          setTimeout(function(){
+          setTimeout(()=> {
             self.started = 0; 
           },200);
         },700);
       } 
     }
-    //$(window).on('load', function(){
-    app.init();
-    //});
+    $(document).ready(()=> {
+      app.init();
+    });
   });
 })();
