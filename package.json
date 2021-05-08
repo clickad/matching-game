@@ -24,7 +24,7 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.1.0",
     "file-loader": "^4.1.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "style-loader": "^0.23.1",
     "webpack": "^4.39.0",
     "webpack-cli": "^3.3.6"
